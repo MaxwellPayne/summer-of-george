@@ -1,5 +1,6 @@
 .DS_Store
 .nodemonignore
+.js~
 npm-debug.log
 .sass-cache/
 .bower-*/

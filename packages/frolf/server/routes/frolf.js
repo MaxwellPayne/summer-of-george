@@ -1,5 +1,7 @@
 'use strict';
 
+var players = require('../controllers/players');
+
 // The Package is past automatically as first parameter
 module.exports = function(Frolf, app, auth, database) {
 
@@ -23,4 +25,11 @@ module.exports = function(Frolf, app, auth, database) {
             res.send(html);
         });
     });
+
+    app.route('/frolf/players/:userId')
+        .get(players.show)
+        .post(auth.requiresLogin, players.create);
+
+    app.param('userId', players.player);
+
 };

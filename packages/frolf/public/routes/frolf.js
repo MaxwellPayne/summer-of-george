@@ -6,5 +6,11 @@ angular.module('mean.frolf').config(['$stateProvider',
             url: '/frolf/example',
             templateUrl: 'frolf/views/index.html'
         });
+	
+	$stateProvider.state('player create test', {
+	    url: '/frolf/player/:userId/create',
+	    templateUrl: 'frolf/views/players/create.html'
+	});
+
     }
 ]);
