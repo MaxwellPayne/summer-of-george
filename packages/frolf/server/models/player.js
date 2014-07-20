@@ -28,8 +28,8 @@ PlayerSchema.virtual('id').get(function() {
 });
 
 PlayerSchema.statics = {
-    load: function(id, cb) {
-	this.findOne({_id: id}).populate('user').exec(cb);
+    load: function(userId, cb) {
+	this.findOne({user: userId}).populate('user').exec(cb);
     }
 };
     

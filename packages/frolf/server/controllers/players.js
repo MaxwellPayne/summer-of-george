@@ -7,14 +7,9 @@ var mongoose = require('mongoose')
 
 exports.create = function(req, res) {
     var player = new Player(req.body);
-    console.log("inside exports.create");
-player.user = req.user;
-console.log(player);
-   player.save(function(err, plyr) {
-       console.log('saving may be err');
-       console.log(err);
+    player.user = req.user;
+    player.save(function(err, plyr) {
 	if (err) return err;
-       console.log('saved in exports');
     });
     res.jsonp(player);
 };
@@ -24,8 +19,8 @@ exports.show = function(req, res) {
     res.jsonp(req.player);
 };
 
-exports.player = function(req, res, next, id) {
-    Player.load(id, function(err, player) {
+exports.player = function(req, res, next) {
+    Player.load(req.user._id, function(err, player) {
 	if (err) return next(err);
 	if (!player) return next(new Error("cannot find player " + id));
 	req.player = player;

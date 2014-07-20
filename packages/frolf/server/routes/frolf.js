@@ -38,3 +38,5 @@ module.exports = function(Frolf, app, auth, database) {
     app.param('userId', players.player);
 
 };
+
+// la cabrera - 40% off from 7-8 pm
