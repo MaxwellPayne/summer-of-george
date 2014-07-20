@@ -18,7 +18,8 @@ var PlayerSchema = new Schema({
 		uppercase: true,
 		enum: ['S', 'M', 'L', 'XL']}
     },
-    { _id: false } // Players don't use their _id
+    //{ _id: false } // Players don't use their _id
+    { id: false} // Players don't use their _id, hide its getter 
 );
 
 PlayerSchema.virtual('id').get(function() {

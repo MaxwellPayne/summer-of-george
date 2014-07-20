@@ -26,9 +26,14 @@ module.exports = function(Frolf, app, auth, database) {
         });
     });
 
-    app.route('/frolf/players/:userId')
-        .get(players.show)
+    app.route('/frolf/profiles')
+        .get(players.all)
         .post(auth.requiresLogin, players.create);
+
+    app.route('/frolf/profiles/:userId')
+        .get(players.show)
+        .put(auth.requiresLogin, players.update)
+        .delete(auth.requiresLogin, players.delete);
 
     app.param('userId', players.player);
 

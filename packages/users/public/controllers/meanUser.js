@@ -14,6 +14,7 @@ angular.module('mean.users')
           .success(function(response) {
             // authentication OK
             $scope.loginError = 0;
+	      console.log(response);
             $rootScope.user = response.user;
             $rootScope.$emit('loggedin');
             if (response.redirect) {
