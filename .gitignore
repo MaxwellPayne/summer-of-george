@@ -1,6 +1,7 @@
 .DS_Store
 .nodemonignore
-.js~
+*.js~
+*.html~
 npm-debug.log
 .sass-cache/
 .bower-*/
@@ -14,3 +15,6 @@ modules/public/
 modules/views/
 /public/build/
 /nbproject/private/
+
+# A scratch work directory in Max's filesystem
+packages/frolf/misc_development_data/
