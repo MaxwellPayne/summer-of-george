@@ -74,6 +74,6 @@ CourseSchema.methods = {
 mongoose.model('Course', CourseSchema);
 mongoose.model('Hole', HoleSchema);
 
-// DEBUG
-exports.Hole = HoleSchema;
-exports.Course = CourseSchema;
+// Schemas may be referenced by other models
+exports.CourseSchema = CourseSchema;
+exports.HoleSchema = HoleSchema;

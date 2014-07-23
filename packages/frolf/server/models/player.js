@@ -34,3 +34,5 @@ PlayerSchema.statics = {
 };
     
 mongoose.model('Player', PlayerSchema);
+
+exports.PlayerSchema = PlayerSchema;
