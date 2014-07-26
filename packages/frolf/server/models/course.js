@@ -3,7 +3,8 @@
 var mongoose = require('mongoose')
     , env = process.env.NODE_ENV || 'development'
     //, config = require('../config')
-    , Schema = mongoose.Schema;
+    , Schema = mongoose.Schema
+    , _ = require('underscore');
 
 
 var HoleSchema = new Schema({
@@ -34,7 +35,9 @@ var CourseSchema = new Schema({
     numberOfHoles: {
 	type: Number
     },
-    name: {
+    courseName: {
+	// never change this property to 'name',
+	// 'name' is reserved in some mongoose.Query methods
 	type: String
     },
     lattitude: {
@@ -68,8 +71,37 @@ CourseSchema.methods = {
 	}
 };
 
+var _CourseSchema = {};
+// Implementation of CourseSchema.statics.chainQueries
+_CourseSchema.chainQueries = function(existingQueryset) {
+    if (existingQueryset) {
+    _CourseSchema.queryset = existingQueryset;
+    }
+    else {
+	var Course = mongoose.model('Course');
+	_CourseSchema.queryset = Course.find();
+    }
+    return _CourseSchema;
+};
 
+_CourseSchema
+    // search by partial match on courseName
+    .matchName = function(name) {
+	var nameRegex = new RegExp(name, 'i');
+	return _CourseSchema.queryset.regex('courseName', nameRegex);
+};
 
+CourseSchema.statics = {
+    load: function(courseId, cb) {
+	return this
+	           .findOne({ _id: courseId })
+	           .populate('holes')
+	           .exec(cb);
+    },
+    chainQueries: _CourseSchema.chainQueries
+    // chainable preset static queries, each of which returns queryset
+    // example: Course.matchName('name').somethingElse(arg)
+};
 
 mongoose.model('Course', CourseSchema);
 mongoose.model('Hole', HoleSchema);
