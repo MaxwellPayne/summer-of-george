@@ -1,6 +1,7 @@
 'use strict';
 
 var players = require('../controllers/players');
+var courses = require('../controllers/courses');
 
 // The Package is past automatically as first parameter
 module.exports = function(Frolf, app, auth, database) {
@@ -26,6 +27,7 @@ module.exports = function(Frolf, app, auth, database) {
         });
     });
 
+    // player profiles
     app.route('/frolf/profiles')
         .get(players.all)
         .post(auth.requiresLogin, players.create);
@@ -36,6 +38,16 @@ module.exports = function(Frolf, app, auth, database) {
         .delete(auth.requiresLogin, players.delete);
 
     app.param('userId', players.player);
+
+    // courses
+    app.route('/frolf/courses')
+        .get(courses.all);
+
+    app.route('frolf/courses/search').
+	get(courses.search);
+
+    app.route('/frolf/courses/:courseId', courses.course);
+
 
 };
 

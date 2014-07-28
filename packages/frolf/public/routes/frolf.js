@@ -17,5 +17,10 @@ angular.module('mean.frolf').config(['$stateProvider',
 	    templateUrl: 'frolf/views/players/profile.html'
 	});
 
+	$stateProvider.state('list search courses', {
+	    url: '/frolf/courses/courses',
+	    templateUrl: 'frolf/views/courses/list.html'
+	});
+
     }
 ]);

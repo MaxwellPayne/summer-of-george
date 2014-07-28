@@ -1,0 +1,17 @@
+<div ng-controller="CoursesCtrl" ng-init="all()">
+
+<form ng-submit="search()">
+  <label class="control-label" for="name">Name</label>
+    <input type="text" ng-model="name" id="name" placeholder="Name">
+  <!--<label class="control-label" for="name">Name</label> 
+    <input type="text" ng-model="fantasyteam.name" id="name" placeholder="Name">-->
+ <input type="submit">
+</form>
+
+  <ul ng-repeat="course in courses">
+    <li>{{ Course.name }}</li>
+  </ul>
+
+  
+
+</div>

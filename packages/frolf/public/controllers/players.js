@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mean.frolf')
-    .controller('PlayersController', ['$scope', '$stateParams', '$location', 'Global', 'Players',
+    .controller('PlayersCtrl', ['$scope', '$stateParams', '$location', 'Global', 'Players',
 		function($scope, $stateParams, $location, Global, Players) {
 		    $scope.global = Global;
 
