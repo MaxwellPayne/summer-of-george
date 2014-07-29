@@ -33,7 +33,7 @@ var RoundSchemaSetters = {
 	}
 	return courseVal;
     }
-}
+};
 
 var RoundSchema = new Schema({
 // A party of Players record HolePerformances

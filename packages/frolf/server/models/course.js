@@ -71,7 +71,14 @@ CourseSchema.methods = {
 	}
 };
 
-var _CourseSchema = {};
+// If we like this chainQueries thing _CourseSchema
+// should be abstracted into a class
+
+var _CourseSchema = {
+    exec: function(callback) {
+	this.queryset.exec(callback);
+    }
+};
 // Implementation of CourseSchema.statics.chainQueries
 _CourseSchema.chainQueries = function(existingQueryset) {
     if (existingQueryset) {
@@ -109,3 +116,7 @@ mongoose.model('Hole', HoleSchema);
 // Schemas may be referenced by other models
 exports.CourseSchema = CourseSchema;
 exports.HoleSchema = HoleSchema;
+
+
+
+

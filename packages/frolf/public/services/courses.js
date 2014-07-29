@@ -10,5 +10,6 @@ angular.module('mean.frolf')
 		    minavg: '@minavg',
 		    maxavg: '@maxavg',
 		    bestscore: '@bestscore'
-		});
+		}
+	    );
 	}]);

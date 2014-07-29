@@ -1,6 +1,6 @@
 'use strict';
 
-var _ = require('underscore');
+//var _ = require('underscore');
 
 angular.module('mean.frolf')
     .controller('CoursesCtrl', ['$scope', '$stateParams', '$location', 'Global', 'Courses',
@@ -8,13 +8,13 @@ angular.module('mean.frolf')
 		    
 		    var searchParams = ['name', 'minavg', 'maxavg', 'bestscore'];
 		    var _nullallParams = function() {
-			_.forEach(searchParams, function(param) {
-			    $scope[param] = null;
-			});
+			for (var p in searchParams) {
+			    $scope[searchParams[p]] = null;
+			}
 		    };
 
-		    $scope.search = searchCourses = function() {
-			var courses = Courses.get(
+		    $scope.search = function() {
+			var courses = Courses.query(
 			    {
 				name: $scope.name,
 				minavg: $scope.minavg,
@@ -23,15 +23,21 @@ angular.module('mean.frolf')
 			    },
 			    function(success) {
 				$scope.courses = courses;
-			    });
-			};
+				console.log(courses);
+			    },
+			    function(err) {
+				console.log('CoursesCtrl err ' + JSON.stringify(err));
+			    }
+			);
+		    };
 
 
 		    $scope.all = function() {
 			_nullallParams();
-			searchCourses();
+			$scope.search();
 			};
 
 		    // initialize
 		    $scope.global = Global;
+		    $scope.courses = [];
 		}]);

@@ -43,8 +43,8 @@ module.exports = function(Frolf, app, auth, database) {
     app.route('/frolf/courses')
         .get(courses.all);
 
-    app.route('frolf/courses/search').
-	get(courses.search);
+    app.route('/frolf/courses/search')
+	.get(courses.search);
 
     app.route('/frolf/courses/:courseId', courses.course);
 

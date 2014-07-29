@@ -18,7 +18,7 @@ angular.module('mean.frolf').config(['$stateProvider',
 	});
 
 	$stateProvider.state('list search courses', {
-	    url: '/frolf/courses/courses',
+	    url: '/frolf/courses',
 	    templateUrl: 'frolf/views/courses/list.html'
 	});
 

@@ -12,15 +12,15 @@ exports.show = function(req, res) {
 
 exports.course = function(req, res, next, id) {
     Course.load(id, function(err, course) {
-	if (err) return next(err);
-	if (!course) return next(new Error("cannot find course " + id));
+	if (err) next(err);
+	if (!course) next(new Error("cannot find course " + id));
 	req.course = course;
 	next();
     });
 };
 
-exports.search = function(req, res, next) {
-    var qry = Course.chainQuery();
+exports.search = function(req, res) {
+    var qry = Course.chainQueries();
     if (req.query.hasOwnProperty('name')) qry = qry.matchName(req.query.name);
     var searchParams = {'minavg' : 'gte',
 			'maxavg' : 'lte', 
@@ -28,12 +28,12 @@ exports.search = function(req, res, next) {
     // all possible search params in req's querystring
     _.forEach(searchParams, function(queryMethod, paramName) {
 	if (req.query.hasOwnProperty(paramName)) {
-	    qry = qry[method](paramName, req.query[paramName]);
+	    qry = qry[queryMethod](paramName, req.query[paramName]);
 	}
     });
     qry.exec(function(err, courses) {
-	if (err) next(err);
-	req.courses = courses
+	if (err) return err;
+	res.jsonp(courses);
     });
 };
 
