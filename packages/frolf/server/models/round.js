@@ -1,6 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose')
+    , util = require('util')
     , mongoosePrivatePaths = require('mongoose-private-paths')
     , _ = require('underscore')
     , env = process.env.NODE_ENV || 'development'
@@ -26,7 +27,6 @@ var RoundSchemaSetters = {
     },
 	
 };
-
 
 
 var RoundSchema = new Schema({
@@ -69,16 +69,29 @@ var RoundSchema = new Schema({
 
 RoundSchema.plugin(mongoosePrivatePaths);
 
-RoundSchema.methods.submitRound = function() {
-    if (this.over) throw new Error('Scorecard has already been submit');
-    var unscored = _.find(this.performances, function(performance) {
-	// check if any performances haven't been scored
-	return !performance.hasOwnProperty('score')
-    });
-    if (unscored) {
-	throw new Error('Hole {0} has no score'.format(unscored.hole.flagNumber));
+RoundSchema.methods.performanceOnHole = function(flagNumber) {
+    var index = flagNumber - 1;
+    if (flagNumber > 0 && index < this.performances.length) {
+	return this.performances[index];
     }
+    else throw new Error('Hole number ' + flagNumber + ' does not exist');
+};
+
+RoundSchema.methods.submitRound = function(next) {
+    if (this.over) next(new Error('Scorecard has already been submit'));
+    
+    for (var i = 0, flag = 1; i < this.performances.length; i++, flag++) {
+	// if any performance is not scored, call with error
+	if (! (_.has(this.performances[i].toObject(), 'score')) ) {
+	    next(new Error(util.format('Hole %d has no score', flag)));
+	}  
+    }
+    // mark the round as over and save, making it immutable
     this.over = true;
+    this.save(function(err, self) {
+	if (err) next(err);
+	else next(null, self);
+    });
 };
 
 RoundSchema.virtual('isOver')
@@ -86,14 +99,17 @@ RoundSchema.virtual('isOver')
 	return this.over;
     });
 
+
 RoundSchema.pre('save', function(next) {
     // If the Round is immutable, raise error pre save
     // Else save and make immutable
-    if (this.over) next(new Error('This round is already over and therefore immutable'));
-    else {
-	this.immutable = true;
-	next();
+    if (this.immutable) {
+	next(new Error('This round is already over and therefore immutable'));
     }
+    else if (this.over) {
+	this.immutable = true;
+	}
+	next();
 });
 
 
