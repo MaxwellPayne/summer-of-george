@@ -1,0 +1,366 @@
+<html lang="en">
+  <head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+<style>
+html {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+table {
+	width: 100%;
+	height:100%;
+}
+td {
+	border-style: solid;
+	height: 30%;
+	width: 5%;
+	border-width: 25px;
+	border-radius: 5px;
+	border-color: green;
+	text-align: center;
+	font-size: 82px;
+	font-family: 'Pacifico', cursive;
+}
+label {
+  float: left;
+}
+
+
+/*
+ * Override Bootstrap's default container.
+ */
+
+@media (min-width: 1200px) {
+  .container {
+    width: 970px;
+  }
+}
+
+
+/*
+ * Masthead for nav
+ */
+
+.blog-masthead {
+  background-color: #428bca;
+  -webkit-box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
+          box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
+}
+
+.nav-title {
+	position: relative;
+  	display: inline-block;
+  	padding-right: 30px;
+ 	font-weight: 1000;
+  	color: #cdddeb;
+  	cursor: pointer;
+}
+
+/* Nav links */
+.nav-item {
+  position: relative;
+  display: inline-block;
+  padding: 10px;
+  font-weight: 500;
+  color: #cdddeb;
+}
+.nav-item:hover,
+.nav-item:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Active state gets a caret at the bottom */
+.head-nav .active {
+  color: #fff;
+}
+.head-nav .active:after {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin-left: -5px;
+  vertical-align: middle;
+  content: " ";
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid;
+  border-left: 5px solid transparent;
+}
+.bigNumInput,
+.holeScoreInput {
+	height: 100px;
+	width: 100px;
+	padding-bottom: 10px;
+  font-size: 64px;
+  padding-left: 25px;
+}
+.playerNames {
+  width: 90%;
+  font-size: 36px;
+  line-height:30px;
+  padding-top:20px;
+  padding-bottom:20px;
+  text-align: center;
+}
+.bigLabel {
+  margin-top: 50px;
+  font-size: 24px;
+  margin-left: 20px;
+}
+.labeled {
+  text-align: center;
+}
+#round {
+  display: none;
+}
+#holeTitle {
+  width: 100%;
+  background-color: #428bca;
+}
+#holeNum {
+    font-size: 48px;
+    color: white;
+    text-align: center;
+}
+#parNum {
+  font-size: 48px;
+  color: white;
+  text-align: center;
+}
+
+</style>
+</header>
+<body>
+<div class="blog-masthead">
+      <div class="container">
+        <nav class="head-nav">
+        <h1 class="nav-title">TSoG</h1>
+          <a class="nav-item" href="#">Dashboard</a>
+          <a class="nav-item active" href="#">Round</a>
+          <a class="nav-item" href="#">Search</a>
+          <a class="nav-item" href="#">History</a>
+          <a class="nav-item" href="#">Profile</a>
+        </nav>
+      </div>
+      <form id="login"
+
+      </form>
+</div>
+    <div class="container" id="preRound">
+	    <div class="row">
+	    	<div class="col-lg-4">
+		      	<form class="form-round" role="form">
+			        <h2 class="form-round-heading">Begin a round:</h2>
+              <div class="labeled">
+              <label class="label label-primary bigLabel"  for="numOfPlayers">Players</label>
+			         <br>
+			         <input type="number" class="bigNumInput" id="numOfPlayers"  value="1" required autofocus>
+              </div>
+			        <hr>
+			        <div class="btn btn-lg btn-primary btn-block" id="beginRoundButt">Begin</div>
+		        </form>
+	        </div>
+	        <div class="col-lg-8" id="namesCont">
+	        </div>
+	    </div>
+    </div>
+
+    <div class="container" id="round">
+      <div class="row">
+          <div id="holeTitle">
+            <p id="holeNum">Hole 1</p>
+            <p id="parNum">Par 3</p>
+          </div>
+        <div id="col-lg-4"></div>
+      </div>
+    </div>
+</body>
+
+<!--these scripts are used by all views with bootstrap (and jquery)-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<!--this script is specific to the round view-->
+<script type="text/javascript">
+function onPlayersSubmit(){
+	console.log('submitted');
+}
+//on document load, draw one name box
+$(document).ready(function(){
+  drawNameBoxes(1);
+})
+//e handler for picking the num of players
+$('#numOfPlayers').on('input', function(){
+	var val = $(this).val();
+	if (val < 1){
+		$(this).val(1);
+	} else if (val > 4){
+    $(this).val(4);
+  } else {
+    $('#namesCont').empty();
+		drawNameBoxes(val)
+	}
+})
+
+function drawNameBoxes(v){
+  var t = "";
+  for (var i = 1; i <= v; i++){
+    document.getElementById('namesCont').innerHTML += '<label for="player' + i + '">Player ' +
+    i + '</label><hr><input type="text" class="playerNames" id="player' + i + '">';
+  }
+}
+
+$('#beginRoundButt').on('click', function(){
+  if (document.getElementById('player1') == ""){
+    alert('Player 1 may not be empty');
+  }
+  var val = $('#numOfPlayers').val();
+  var round = {};
+  round.players = [];
+  for (var i = 1; i <= val; i++){
+    var n = document.getElementById('player' + i).value;
+    if (n && n != ""){
+      round.players.push(n);
+    }
+  }
+  $("#preRound").fadeOut("slow", function(){
+    drawRound(round);
+  });
+})
+//////////////////////////////////////////////////////////////////
+//////////////////////all this shit is exclusive to the round view///
+strokes = ["ace", "eagle", "birdie", "par", "bogey", "double-bogey", "triple-bogey"];
+function drawRound(round){
+  $("#round").fadeIn("slow", function(){
+    for (var i = 0; i < round.players.length; i++){
+      console.log(i);
+      $('#round').append(playerHoleRow(round.players[i],holes[0], i + 1));
+    }
+  })
+}
+
+function playerHoleRow(player, hole, i){
+  var r = document.createElement('div');
+  r.className = "row holeRows";
+  r.id = "playerRow" + i;
+  var c4 = document.createElement('div');
+  c4.className = "col-lg-4";
+  r.appendChild(c4);
+  var c8 = document.createElement('div');
+  c8.className = "col-lg-4";
+  r.appendChild(c8);
+  var c12 = document.createElement('div');
+  c12.className = "col-lg-4";
+  r.appendChild(c12);
+  var l = document.createElement('label');
+  l.className = "label label-primary bigLabel";
+  l.innerHTML = player + ': ';
+  c4.appendChild(l);
+  var i = document.createElement('input');
+  i.type = "number";
+  i.value = hole.par;
+  i.className = "holeScoreInput";
+  i.id = "holeInput" + hole._holeid;
+  c8.appendChild(i);
+  d12 = document.createElement('div');
+  d12.className = "scoreGraphic";
+  return r;
+}
+
+$('#round').on('change', '.row', function(){
+  this.childNodes[2].innerHTML = "changed"
+});
+
+
+
+//////////////////////////////////////////////////////////////////
+//loading dummy data here
+holes = [
+    {
+      _holeid: 01,
+      par: 3
+    },
+    {
+      _holeid: 02,
+      par: 3
+    },
+    {
+      _holeid: 03,
+      par: 3
+    },
+    {
+      _holeid: 04,
+      par: 3
+    },
+    {
+      _holeid: 05,
+      par: 3
+    },
+    {
+      _holeid: 06,
+      par: 3
+    },
+    {
+      _holeid: 07,
+      par: 3
+    },
+    {
+      _holeid: 08,
+      par: 3
+    },
+    {
+      _holeid: 09,
+      par: 3
+    },
+    {
+      _holeid: 10,
+      par: 3
+    },
+    {
+      _holeid: 11,
+      par: 4
+    },
+    {
+      _holeid: 12,
+      par: 3
+    },
+    {
+      _holeid: 13,
+      par: 3
+    },
+    {
+      _holeid: 14,
+      par: 3
+    },
+    {
+      _holeid: 15,
+      par: 3
+    },
+    {
+      _holeid: 16,
+      par: 3
+    },
+    {
+      _holeid: 17,
+      par: 4
+    },
+    {
+      _holeid: 18,
+      par: 3
+    }
+  ]
+</script>
+</html
