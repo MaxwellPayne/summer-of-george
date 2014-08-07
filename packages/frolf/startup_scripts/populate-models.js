@@ -21,9 +21,13 @@ _.forEach(hs, function(i) {
 
 c.holes = hs;
 
+c.save(function(err, docs) {
+    console.log('c.save');
+});
 
 Course.remove(true, function(err) {
     c.save(function(err, docs) {
 	if (err) console.log(err);
     });
 });
+

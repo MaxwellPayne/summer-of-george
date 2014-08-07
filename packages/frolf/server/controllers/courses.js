@@ -1,5 +1,6 @@
 'use strict';
 
+
 var mongoose = require('mongoose')
     , async = require('async')
     , Course = mongoose.model('Course')
@@ -20,7 +21,9 @@ exports.course = function(req, res, next, id) {
 };
 
 exports.search = function(req, res) {
+    console.log('courses search');
     var qry = Course.chainQueries();
+    console.log(req.query);
     if (req.query.hasOwnProperty('name')) qry = qry.matchName(req.query.name);
     var searchParams = {'minavg' : 'gte',
 			'maxavg' : 'lte', 
@@ -31,10 +34,16 @@ exports.search = function(req, res) {
 	    qry = qry[queryMethod](paramName, req.query[paramName]);
 	}
     });
+
+    //mongoose.connection.open('mongodb://localhost/sofg-dev');
+    //console.log(mongoose.connection);
+    
     qry.exec(function(err, courses) {
+	console.log('YAY');
 	if (err) return err;
 	res.jsonp(courses);
     });
+    
 };
 
 exports.all = function(req, res) {

@@ -1,5 +1,6 @@
 'use strict';
 
+
 var mongoose = require('mongoose')
     , util = require('util')
     , mongoosePrivatePaths = require('mongoose-private-paths')
@@ -28,6 +29,7 @@ var RoundSchemaSetters = {
 	
 };
 
+var MAXIMUM_SCORE = 8;
 
 var RoundSchema = new Schema({
 // A party of Players record HolePerformances
@@ -48,15 +50,15 @@ var RoundSchema = new Schema({
 		ref: 'Hole'
 	    },
 	    score: {
-		type: Number
+		type: Number,
+		max: MAXIMUM_SCORE,
+		min: 1
 	    }
-	}],
-	private: true
+	}]
     },
     over: {
 	type: Boolean,
-	default: false,
-	private: true
+	default: false
     },
    immutable: {
        // only used by the pre('save') event
@@ -69,12 +71,19 @@ var RoundSchema = new Schema({
 
 RoundSchema.plugin(mongoosePrivatePaths);
 
-RoundSchema.methods.performanceOnHole = function(flagNumber) {
-    var index = flagNumber - 1;
+RoundSchema.methods.scoreOnHole = function(flagNumber, setScore) {
+    var index = flagNumber - 1
+        , perf = undefined;
     if (flagNumber > 0 && index < this.performances.length) {
-	return this.performances[index];
+	perf = this.performances[index];
     }
     else throw new Error('Hole number ' + flagNumber + ' does not exist');
+
+    if ( (setScore | 0 ) === setScore ) {
+	// if set score is an integer, set the score
+	perf.score = setScore;
+    }
+    return perf.score;
 };
 
 RoundSchema.methods.submitRound = function(next) {
@@ -94,10 +103,6 @@ RoundSchema.methods.submitRound = function(next) {
     });
 };
 
-RoundSchema.virtual('isOver')
-    .get(function() {
-	return this.over;
-    });
 
 
 RoundSchema.pre('save', function(next) {
@@ -113,5 +118,7 @@ RoundSchema.pre('save', function(next) {
 });
 
 
+
 mongoose.model('Round', RoundSchema);
 exports.RoundSchema = RoundSchema;
+

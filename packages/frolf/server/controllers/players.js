@@ -22,7 +22,7 @@ exports.show = function(req, res) {
 exports.player = function(req, res, next) {
     Player.load(req.user._id, function(err, player) {
 	if (err) return next(err);
-	if (!player) return next(new Error("cannot find player " + id));
+	if (!player) return next(new Error("cannot find player " + req.user._id));
 	req.player = player;
 	next();
     });

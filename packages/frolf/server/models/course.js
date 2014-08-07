@@ -76,6 +76,7 @@ CourseSchema.methods = {
 
 var _CourseSchema = {
     exec: function(callback) {
+	//callback(null, []);
 	this.queryset.exec(callback);
     }
 };
@@ -109,6 +110,8 @@ CourseSchema.statics = {
     // chainable preset static queries, each of which returns queryset
     // example: Course.matchName('name').somethingElse(arg)
 };
+
+
 
 mongoose.model('Course', CourseSchema);
 mongoose.model('Hole', HoleSchema);
