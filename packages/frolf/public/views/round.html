@@ -23,29 +23,17 @@ table {
 	width: 100%;
 	height:100%;
 }
-td {
-	border-style: solid;
-	height: 30%;
-	width: 5%;
-	border-width: 25px;
-	border-radius: 5px;
-	border-color: green;
-	text-align: center;
-	font-size: 82px;
-	font-family: 'Pacifico', cursive;
-}
+
 label {
   float: left;
 }
 
-
 /*
  * Override Bootstrap's default container.
  */
-
 @media (min-width: 1200px) {
   .container {
-    width: 970px;
+    width: 1200px;
   }
 }
 
@@ -53,7 +41,6 @@ label {
 /*
  * Masthead for nav
  */
-
 .blog-masthead {
   background-color: #428bca;
   -webkit-box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
@@ -103,10 +90,10 @@ label {
 .bigNumInput,
 .holeScoreInput {
 	height: 100px;
-	width: 100px;
+	width: 60px;
 	padding-bottom: 10px;
   font-size: 64px;
-  padding-left: 25px;
+  
 }
 .playerNames {
   width: 90%;
@@ -128,7 +115,6 @@ label {
   display: none;
 }
 #holeTitle {
-  width: 100%;
   background-color: #428bca;
 }
 #holeNum {
@@ -141,7 +127,51 @@ label {
   color: white;
   text-align: center;
 }
-
+.titleCard {
+  height: 60px;
+  font-size: 48px;
+  margin-top: 25px;
+  padding: 10px;
+}
+.scoreGraphic {
+  font-size: 36px; 
+  border-radius: 10px;
+  padding: 20px;
+}
+/*
+.par {
+  background-color: yellow;
+}
+.bogey {
+  background-color: orange;
+}
+.double-bogey,
+.triple-bogey,
+.quad-bogey {
+  background-color: red;
+}
+.birdie {
+  background-color: green;
+}
+.eagle {
+  background-color: lightGreen;
+}
+*/
+.col-lg-4 {
+  text-align: center;
+}
+.buttonTron {
+  background-color: #428bca;
+  width: 100%;
+  color: white;
+  font-size: 48px;
+  padding-top: 20px;
+}
+.pstanding {
+  font-size: 36px;
+  padding: 40px;
+  width: 100%;
+}
 </style>
 </header>
 <body>
@@ -180,14 +210,27 @@ label {
     </div>
 
     <div class="container" id="round">
-      <div class="row">
-          <div id="holeTitle">
-            <p id="holeNum">Hole 1</p>
-            <p id="parNum">Par 3</p>
+      <div class="row" id="roundTop">
+        <div class="col-lg-4">
+          <div id="lastHoleButt" class="btn btn-default buttonTron">
+            <-- last hole
           </div>
-        <div id="col-lg-4"></div>
+        </div>
+        <div class="col-lg-4" id="holeTitle">
+          <p id="holeNum">Hole 1</p>
+          <p id="parNum">Par 3</p>
+        </div>
+          <div class="col-lg-4">
+            <div id="nextHoleButt" class="btn btn-default buttonTron">
+              Next hole -->
+              </div>
+            </div>
+          </div>
+          <hr>
+        </div>
       </div>
     </div>
+
 </body>
 
 <!--these scripts are used by all views with bootstrap (and jquery)-->
@@ -196,7 +239,6 @@ label {
 <!--this script is specific to the round view-->
 <script type="text/javascript">
 function onPlayersSubmit(){
-	console.log('submitted');
 }
 //on document load, draw one name box
 $(document).ready(function(){
@@ -222,36 +264,52 @@ function drawNameBoxes(v){
     i + '</label><hr><input type="text" class="playerNames" id="player' + i + '">';
   }
 }
-
+//transition from pre-round sub-view to round sub-view
 $('#beginRoundButt').on('click', function(){
   if (document.getElementById('player1') == ""){
     alert('Player 1 may not be empty');
   }
   var val = $('#numOfPlayers').val();
-  var round = {};
-  round.players = [];
+  var round = [];
   for (var i = 1; i <= val; i++){
     var n = document.getElementById('player' + i).value;
     if (n && n != ""){
-      round.players.push(n);
+      var o = {};
+      o.score = [];
+      o.pname = n;
+      round.push(o);
     }
   }
+  //edge case
+  if (round.length == 0){
+    alert('round must have one player');
+    return;
+  }
+  //call the animation and draw dynamic rows
   $("#preRound").fadeOut("slow", function(){
     drawRound(round);
   });
 })
 //////////////////////////////////////////////////////////////////
-//////////////////////all this shit is exclusive to the round view///
-strokes = ["ace", "eagle", "birdie", "par", "bogey", "double-bogey", "triple-bogey"];
+//////////////////all this shit is exclusive to the round sub-view
+strokes = ["ace", "eagle", "birdie", "par", "bogey", "double-bogey", "triple-bogey", "quad-bogey"];
+//animation for the round and call the player rows rendering
 function drawRound(round){
+  //this is a bad thing to do. round is pushed to window scope and state controls the current hole
+  window.round = round;
+  window.state = 0;
   $("#round").fadeIn("slow", function(){
-    for (var i = 0; i < round.players.length; i++){
-      console.log(i);
-      $('#round').append(playerHoleRow(round.players[i],holes[0], i + 1));
+    for (var i = 0; i < round.length; i++){
+      $('#round').append(playerHoleRow(round[i].pname,holes[window.state], i + 1));
     }
   })
+  $('#lastHoleButt').css('display', 'none');
+  //add players objects to the round array
+  for (var i = 0; i < round[i].pname; i++){
+    round.players[i]
+  }
 }
-
+//this draws a row for each player in the round -- clean this up later
 function playerHoleRow(player, hole, i){
   var r = document.createElement('div');
   r.className = "row holeRows";
@@ -266,7 +324,7 @@ function playerHoleRow(player, hole, i){
   c12.className = "col-lg-4";
   r.appendChild(c12);
   var l = document.createElement('label');
-  l.className = "label label-primary bigLabel";
+  l.className = "label label-primary bigLabel titleCard";
   l.innerHTML = player + ': ';
   c4.appendChild(l);
   var i = document.createElement('input');
@@ -274,20 +332,127 @@ function playerHoleRow(player, hole, i){
   i.value = hole.par;
   i.className = "holeScoreInput";
   i.id = "holeInput" + hole._holeid;
-  c8.appendChild(i);
+  c4.appendChild(i);
+  d8 = document.createElement('div');
+  d8.className = "scoreGraphic";
   d12 = document.createElement('div');
-  d12.className = "scoreGraphic";
+  d12.className = "btn btn-lg btn-warning pStanding";
+  d12.innerHTML = "even"
+  c8.appendChild(d8);
+  c12.appendChild(d12);
   return r;
 }
-
+//on hole score input change -- this jquery selector is for dynamically added DOM elements
 $('#round').on('change', '.row', function(){
-  this.childNodes[2].innerHTML = "changed"
+  //lmao at this
+  var spr = $(this).children()[0].childNodes[1].value
+  var par = holes[window.state].par;
+  //edge case
+  if (spr[0].value < 1){
+    spr[0].value = 1;
+    return;
+  } else if (spr[0].value - par > 4){
+    spr[0].value = 7;
+  }
+  var index =3 - (parseInt(par) - parseInt(spr));
+  drawScoreGraphic(this, index);
 });
+//takes playerHolex as an argument
+function drawScoreGraphic(row, index){
+  row.childNodes[1].childNodes[0].innerHTML = strokes[index];
+  row.childNodes[1].childNodes[0].className = strokes[index] + " scoreGraphic";
+}
+//submits score if this is a new hole, then window.state++ and drawHole()
+$('#nextHoleButt').on('click', function(){
+  for (var i = 1; i <= round.length; i++){
+    if (round[i - 1].score.length == window.state){
+      round[i - 1].score.push(parseInt($('#playerRow' + i).children()[0].childNodes[1].value)); //clean up this line later
+    }
+  }
+  window.state++;
+  drawHole();
+} )
+//change the hole title and draw new player rows
+function drawHole(){
+  if (window.state == 0){ //don't draw the lastHoleButt on the first hole
+    $('#lastHoleButt').css('display', 'none');
+  } else {
+    $('#lastHoleButt').css('display', 'inline-block');
+  }
+  if (window.state == 17){
+    $('#nextHoleButt').html('Submit Round');
+    $('#nextHoleButt').addClass('btn-warning')
+    $('#nextHolebutt').removeClass('btn-primary')
+  } else {
+    $('nextHoleButt').html('Next hole -->');
+  }
+  $('#holeNum').html("Hole " + (window.state + 1)); //update the hole # from window.state
+  $('#parNum').html("Par " + holes[window.state].par); //update the par num from state
+  if (window.state == round[0].score.length){
+    for (var i = 1; i <= round.length; i++){
+      $('#playerRow' + i).children()[0].childNodes[1].value = holes[window.state].par;
+    }
+  } else {
+    for (var i = 0; i < round.length; i++){
+      var s = round[i].score[window.state];
+      $('#playerRow1').children()[1].childNodes[0].value = s;
+    }
+  }
+  //update the score for each player
+  for (var i = 0; i < round.length; i++){
+    $('#playerRow' + (i + 1)).children()[2].childNodes[0].innerHTML = drawPlayerStanding(i);
+  }
+  //erase the scoreGraphics
+  for (var i = 0; i < round.length; i++){
+    $('.scoreGraphic')[i].className = "scoreGraphic";
+    $('.scoreGraphic')[i].innerHTML = "";
+  }
+  //sort by honors if multiple players
+  if (round.length > 1){
+    for (var i = 0; i < round.length; i++){
 
-
-
+    }
+  }
+}
+//on lastholebutton click, -- the state and redraw the hole
+$('#lastHoleButt').on('click', function(){
+  window.state--;
+  drawHole();
+})
+//return the +3 or -2 thing for the player at the given index of the round array
+function drawPlayerStanding(i){
+  var foo = 0;
+  for (var q = 0; q < round[i].score.length; q++){
+    foo += (round[i].score[q] -holes[q].par);
+  }
+  round[i].standing = foo;
+  //format it for the drawing
+  if (foo == 0){
+    foo = "=";
+  } else if (foo > 0){
+    foo = "+" + foo;
+  }
+  return foo;
+}
+//for sorting the round array
+function honorsCompare(p1, p2){
+  for (var i = window.state; i >= 0; i--){
+    if (p1.score[i] > p2.score[i]){
+      return p2;
+    } else if (p2.score[i] > p1.score[i]){
+      return p1;
+    }
+  }
+  return p1;
+}
 //////////////////////////////////////////////////////////////////
 //loading dummy data here
+//bypassing the first sub-view
+setTimeout(function(){
+  $('#player1').val('john');
+  $('#beginRoundButt').click();
+}, 1000);
+
 holes = [
     {
       _holeid: 01,
