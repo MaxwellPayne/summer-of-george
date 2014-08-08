@@ -103,6 +103,15 @@ RoundSchema.methods.submitRound = function(next) {
     });
 };
 
+RoundSchema.statics = {
+    load: function(roundId, cb) {
+	return this
+	           .findOne({ _id: roundId })
+	           .populate('course')
+	           .exec(cb);
+    }
+};
+
 
 
 RoundSchema.pre('save', function(next) {

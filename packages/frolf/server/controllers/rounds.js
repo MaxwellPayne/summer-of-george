@@ -13,24 +13,29 @@ exports.show = function(req, res) {
 exports.round = function(req, res, next, id) {
     Round.load(id, function(err, round) {
 	if (err) next(err);
-	if (!round) next(new Error("cannot find round " + id));
-	req.round = round;
-	next();
+	else if (!round) next(new Error("cannot find round " + id));
+	else {
+	    req.round = round;
+	    next();
+	}
     });
 };
 
 exports.all = function(req, res) {
     Round.find(function(err, rounds) {
-	if (err) res.render('error', { status: 500 });
+	if (err) res.send(500, { error: '500' });
 	else res.jsonp(rounds);
     });
 };
 
-exports.ofPlayer = function(req, res, userId) {
-    Round.find({player: userId})
+exports.ofPlayer = function(req, res) {
+    console.log('ofplayer');
+    //console.log(req.player.user);
+    Round.find({player: req.player.user})
          .populate('performances')
          .exec(function(err, rounds) {
-	     if (err) res.render('error', { status: 500 });
+	     if (err) console.log(err);
+	     if (err) res.send(500, { error: '500' });
 	     else res.jsonp(rounds);
 	 });
 };

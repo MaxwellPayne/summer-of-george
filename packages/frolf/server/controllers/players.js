@@ -19,13 +19,20 @@ exports.show = function(req, res) {
     res.jsonp(req.player);
 };
 
-exports.player = function(req, res, next) {
-    Player.load(req.user._id, function(err, player) {
+exports.player = function(req, res, next, id) {
+    console.log('players.player');
+    Player.load(id, function(err, player) {
 	if (err) return next(err);
-	if (!player) return next(new Error("cannot find player " + req.user._id));
+	if (!player) return next(new Error("cannot find player " + id));
 	req.player = player;
+	console.log(req.player);
 	next();
     });
+};
+
+exports.currentPlayer = function(req, res, next) {
+    var currentUserId = req.user._id;
+    exports.player(req, res, next, currentUserId);
 };
 
 exports.all = function(req, res) {
