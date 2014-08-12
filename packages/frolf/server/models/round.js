@@ -37,11 +37,13 @@ var RoundSchema = new Schema({
     course: {
 	type: Schema.ObjectId,
 	ref: 'Course',
-	set: RoundSchemaSetters.setCourse
+	set: RoundSchemaSetters.setCourse,
+	required: true
     },
     player: {
 	type: Schema.ObjectId,
-	ref: 'Player'
+	ref: 'Player',
+	required: true
     },
     performances: {
 	type: [{
@@ -58,14 +60,16 @@ var RoundSchema = new Schema({
     },
     over: {
 	type: Boolean,
-	default: false
+	default: false,
+	required: true
     },
    immutable: {
        // only used by the pre('save') event
        // false until Round saved as over: true for first time
        type: Boolean,
        default: false,
-       private: true
+       private: true,
+       required: true
    }
 });
 

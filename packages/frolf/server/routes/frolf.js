@@ -3,6 +3,7 @@
 var players = require('../controllers/players')
     , courses = require('../controllers/courses')
     , rounds = require('../controllers/rounds')
+    , outings = require('../controllers/outings')
     , mongoose = require('mongoose');
 
 // The Package is past automatically as first parameter
@@ -15,6 +16,10 @@ module.exports = function(Frolf, app, auth, database) {
 
     var userIdParam = '/:userId';
     app.param(userIdParam.replace('/:', ''), players.player);
+
+    var outingIdParam = '/:outingId';
+    app.param(outingIdParam.replace('/:', ''), outings.outing);
+
 
     var FROLF_ROOT = '/frolf';
 
@@ -77,6 +82,16 @@ module.exports = function(Frolf, app, auth, database) {
 
     app.route(FROLF_ROOT + PROFILE_EXTENSION + userIdParam + ROUND_EXTENSION)
     .get(rounds.ofPlayer);
+
+    // outings
+    var OUTING_EXTENSION = '/outings';
+    var OUTING_ROOT = FROLF_ROOT + OUTING_EXTENSION;
+
+    app.route(OUTING_ROOT)
+    .get(outings.all);
+
+    app.route(OUTING_ROOT + outingIdParam)
+    .get(outings.show);
     
 };
 
