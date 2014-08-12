@@ -1,3 +1,90 @@
 .frolf-example h1: {
 	background-color: purple
 }
+html {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+table {
+	width: 100%;
+	height:100%;
+}
+td {
+	border-style: solid;
+	height: 30%;
+	width: 5%;
+	border-width: 25px;
+	border-radius: 5px;
+	border-color: green;
+	text-align: center;
+	font-size: 82px;
+	font-family: 'Pacifico', cursive;
+}
+input {
+	height: 100%;
+	font-size: 48px;
+}
+
+/*
+ * Override Bootstrap's default container.
+ */
+
+@media (min-width: 1200px) {
+  .container {
+    width: 970px;
+  }
+}
+
+
+/*
+ * Masthead for nav
+ */
+
+.blog-masthead {
+  background-color: #428bca;
+  -webkit-box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
+          box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
+}
+
+.nav-title {
+	position: relative;
+  	display: inline-block;
+  	padding-right: 30px;
+ 	font-weight: 1000;
+  	color: #cdddeb;
+  	cursor: pointer;
+}
+
+/* Nav links */
+.nav-item {
+  position: relative;
+  display: inline-block;
+  padding: 10px;
+  font-weight: 500;
+  color: #cdddeb;
+}
+.nav-item:hover,
+.nav-item:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Active state gets a caret at the bottom */
+.head-nav .active {
+  color: #fff;
+}
+.head-nav .active:after {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin-left: -5px;
+  vertical-align: middle;
+  content: " ";
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid;
+  border-left: 5px solid transparent;
+}
