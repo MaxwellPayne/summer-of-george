@@ -1,7 +1,42 @@
-<div ng-controller="PlayersCtrl" ng-init="setPlayer()">
-  {{ 1 + 2}}
-  <p>{{ global.user }}</p>
-  <p>{{ 1 + 2 }}</p>
-  <p>{{ player }}</p>
-  <button">Test the Create</button>
+<html lang="en">
+  <head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../assets/css/frolf.css" rel="stylesheet" /> <!-- here's our css linked on every page-->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script> <!-- link angular from cdn -->
+    <script src="../../controllers/players.js"></script><!-- scController is exclusive to the profile view -->
+</header>
+<body>
+<div class="blog-masthead">
+      <div class="container">
+        <nav class="head-nav">
+        <h1 class="nav-title">TSoG</h1>
+          <a class="nav-item" href="#">Dashboard</a>
+          <a class="nav-item" href="#">Round</a>
+          <a class="nav-item" href="#">Search</a>
+          <a class="nav-item" href="#">History</a>
+          <a class="nav-item active" href="#">Profile</a>
+        </nav>
+      </div>
+      <form id="login">
+
+      </form>
 </div>
+
+    <div class="container" ng-app="pctrl" ng-controller="PlayersCtrl" ng-init="setPlayer()">
+	    <div class="row">
+        <div class="col-lg-4">
+          <strong ng-model="player">
+          </strong>
+        </div>
+	    </div>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+</html>
