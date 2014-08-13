@@ -34,6 +34,7 @@ var MAXIMUM_SCORE = 8;
 var RoundSchema = new Schema({
 // A party of Players record HolePerformances
 // for each hole on a Course on a given date
+	var ts = Date.now();
     course: {
 	type: Schema.ObjectId,
 	ref: 'Course',
@@ -44,6 +45,11 @@ var RoundSchema = new Schema({
 	type: Schema.ObjectId,
 	ref: 'Player',
 	required: true
+    },
+    timestamp: {
+    	type: Schema.ObjectId,
+    	ref: ts,
+    	required: true
     },
     performances: {
 	type: [{
