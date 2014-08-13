@@ -1,0 +1,108 @@
+<html lang="en">
+  <head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/frolf.css" rel="stylesheet" /> <!-- here's our css linked on every page-->
+    <link href="../assets/css/post-round.css" rel="stylesheet" /> <!--exclusive to post-round view -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script> <!-- link angular from cdn -->
+    <script src="../controllers/post-round.js"></script><!-- scController is exclusive to the profile view -->
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script><!-- d3 draws charts -->
+</header>
+<body>
+<div class="blog-masthead">
+      <div class="container">
+        <nav class="head-nav">
+        <h1 class="nav-title">TSoG</h1>
+          <a class="nav-item" href="#">Dashboard</a>
+          <a class="nav-item active" href="#">Round</a>
+          <a class="nav-item" href="#">Search</a>
+          <a class="nav-item" href="#">History</a>
+          <a class="nav-item" href="#">Profile</a>
+        </nav>
+      </div>
+      <form id="login">
+
+      </form>
+</div>
+
+    <div class="container" ng-app="postRound" ng-controller="pRoundCtrlr" ng-init="parseTimestamp()">
+	    <div class="row">
+        <div class="col-lg-4">
+          <strong ng-model="user" ng-bind="user"> {{user}} </strong>
+        </div>
+        <div class="col-lg-4">
+          <strong ng-bind="renderDate()"></strong>
+        </div>
+        <div class="col-lg-4">
+          <strong ng-bind="round._coursename"></strong>
+        </div>
+	    </div>
+      <div class="row postRoundSC">
+        <table>
+          <tr>
+            <td class="tHeader">Hole</td>
+            <td ng-repeat="hole in course">{{hole._holeid}}</td>
+          </tr>
+          <tr>
+            <td class="tHeader">Par</td>
+            <td ng-repeat="hole in course">{{hole.par}}</td>
+          </tr>
+          <tr id="scoreRow">
+            <td class="tHeader">Score</td>
+            <td ng-repeat="hole in course" ng-class="getCellClass($index)">{{round.holes[$index].score}}</td>
+        </table>
+      </div>
+      <div id="chart">
+
+      </div>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script>//exclusive to this view
+$(function(){
+  var score = d3.select("#scoreRow");
+  var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
+                  11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+  window.foo = $('.container')[0].getClientRects();
+  var w = 500;
+  var h = 100;
+  //Create SVG element
+  var svg = d3.select("#chart")
+              .append("svg")
+              .attr("width", w)
+              .attr("height", h)
+              .attr("x", function(d, i) {
+            return i * 21;  //Bar width of 20 plus 1 for padding
+         })        
+              .attr("y", 0)
+               .attr("width", 20)
+               .attr("height", 100);
+
+  svg.selectAll("rect")
+     .data(dataset)
+     .enter()
+     .append("rect")
+     .attr("x", 0)
+     .attr("y", 0)
+     .attr("width", 20)
+     .attr("height", 100);
+  /*
+  d3.select("#chart")
+      .data(dataset)
+      .enter()
+      .append("div")
+      .attr("class", "bar")
+      .style("height", function(d) {
+          var barHeight = d * 5;
+          return barHeight + "px";
+      })
+  */
+  //console.log(score);
+})
+</script>
+
+</html>
