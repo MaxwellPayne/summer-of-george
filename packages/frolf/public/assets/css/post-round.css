@@ -1,0 +1,31 @@
+.postRoundSC td {
+	font-size: 36px;
+	border: 2px solid #cdddeb;
+}
+table {
+	text-align: center;
+}
+table td {
+	width: 50px;
+} 
+table .tHeader {
+	font-weight: bold;
+	width: auto;/*lmao this is hacky as fuck*/
+}
+.minusTwo {
+	color: lightGreen;
+}
+.minusOne {
+	color: darkGreen;
+	background-color: lightGreen;
+}
+.even {
+	color: black;
+}
+.plusOne {
+	color: darkRed;
+	background-color: lightPink;
+}
+.plusTwo {
+	color: lightRed;
+}
