@@ -75,7 +75,8 @@ module.exports = function(Frolf, app, auth, database) {
     var ROUND_ROOT = FROLF_ROOT + ROUND_EXTENSION;
 
     app.route(ROUND_ROOT)
-    .get(rounds.all);
+    .get(rounds.all)
+    .post(rounds.create);
 
     app.route(ROUND_ROOT + roundIdParam)
     .get(rounds.show);

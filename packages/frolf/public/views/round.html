@@ -1,18 +1,3 @@
-<html lang="en">
-  <head>
-	    <meta charset="utf-8">
-	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	    <meta name="viewport" content="width=device-width, initial-scale=1">
-      <!-- google font and bootstrap from cdn -->
-		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../assets/css/frolf.css" rel="stylesheet" /> <!-- here's our css linked on every page-->
-    <link href="../assets/css/round.css" rel="stylesheet" /> <!-- here's our css specific to the view-->
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script> <!-- link angular from cdn -->
-    <!--<script src="http:/code.angularjs.org/X.Y.Z/angular-resource.js" />  we're also loading ng-resource from cdn -->
-    <script src="../controllers/scController.js"></script><!-- scController is exclusive to the round view -->
-</header>
-<body>
 <div class="blog-masthead">
       <div class="container">
         <nav class="head-nav">
@@ -29,7 +14,9 @@
       </form>
 </div>
 
-<div ng-app="sc1" ng-controller="scController as sc" class="container">
+<!-- don't want to create new ng-app b/c you lose parent scope
+div ng-app="sc1" ng-controller="scController as sc" class="container">-->
+<div ng-controller="scController as sc" class="container">
   <div id="preRound">
     <div class="row">
       <div class="col-lg-4">
@@ -96,11 +83,6 @@
           </div>
     </div>
 </div>
-    
-</body>
-<!-- js loads at the bottom-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">//all jQuery specific to the view is loaded here. nothing in this script impacts the model at all
 //change the visibility of the app when the round begins
 $('#beginRoundButt').on('click', function(){
@@ -127,4 +109,3 @@ function onNumOfPlayersChange(){
   }
 }
 </script>
-</html>

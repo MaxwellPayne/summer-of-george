@@ -28,6 +28,15 @@ exports.all = function(req, res) {
     });
 };
 
+exports.create = function(req, res) {
+    // creates a new round and saves it
+    var round = new Round(req.body);
+    round.save(function(err, rnd) {
+	if (err) res.send(500, 'Could not save round');
+	else res.jsonp(rnd);
+    });
+};
+
 exports.ofPlayer = function(req, res) {
     console.log('ofplayer');
     //console.log(req.player.user);

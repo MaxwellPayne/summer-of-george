@@ -22,5 +22,12 @@ angular.module('mean.frolf').config(['$stateProvider',
 	    templateUrl: 'frolf/views/courses/list.html'
 	});
 
+	$stateProvider.state('outing of rounds', {
+	    url: '/frolf/outings/outingId',
+	    // outingId should actually be parameter
+	    // for now is static b/c controller using dummy data
+	    templateUrl: 'frolf/views/round.html'
+	});
+
     }
 ]);
