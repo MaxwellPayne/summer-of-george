@@ -31,10 +31,11 @@ var RoundSchemaSetters = {
 
 var MAXIMUM_SCORE = 8;
 
+var ts = Date.now();
+
 var RoundSchema = new Schema({
 // A party of Players record HolePerformances
 // for each hole on a Course on a given date
-	var ts = Date.now();
     course: {
 	type: Schema.ObjectId,
 	ref: 'Course',
