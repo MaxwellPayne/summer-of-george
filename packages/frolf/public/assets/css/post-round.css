@@ -29,3 +29,13 @@ table .tHeader {
 .plusTwo {
 	color: lightRed;
 }
+.plusThree {
+	background-color: #D00000;
+}
+svg {
+	border: 2px solid black;
+}		
+text {
+	stroke: #000000;
+	stroke-width: "1px";
+}

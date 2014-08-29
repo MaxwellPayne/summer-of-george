@@ -11,6 +11,7 @@
     <script src="../controllers/post-round.js"></script><!-- scController is exclusive to the profile view -->
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script><!-- d3 draws charts -->
 </header>
+
 <body>
 <div class="blog-masthead">
       <div class="container">
@@ -29,7 +30,7 @@
 </div>
 
     <div class="container" ng-app="postRound" ng-controller="pRoundCtrlr" ng-init="parseTimestamp()">
-	    <div class="row">
+	    <div class="row" id="span">
         <div class="col-lg-4">
           <strong ng-model="user" ng-bind="user"> {{user}} </strong>
         </div>
@@ -52,57 +53,87 @@
           </tr>
           <tr id="scoreRow">
             <td class="tHeader">Score</td>
-            <td ng-repeat="hole in course" ng-class="getCellClass($index)">{{round.holes[$index].score}}</td>
+            <td ng-repeat="hole in course" ng-class="getCellClass($index)" class="scoreCell">{{round.holes[$index].score}}</td>
         </table>
       </div>
-      <div id="chart">
+      <svg id="chart" class="row">
 
-      </div>
+      </svg>
     </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script>//exclusive to this view
 $(function(){
-  var score = d3.select("#scoreRow");
-  var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
-                  11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
-  window.foo = $('.container')[0].getClientRects();
-  var w = 500;
-  var h = 100;
-  //Create SVG element
-  var svg = d3.select("#chart")
-              .append("svg")
-              .attr("width", w)
-              .attr("height", h)
-              .attr("x", function(d, i) {
-            return i * 21;  //Bar width of 20 plus 1 for padding
-         })        
-              .attr("y", 0)
-               .attr("width", 20)
-               .attr("height", 100);
+	var dataset = window.round.holes;
+	var w = $('#span').width();
+	var barW = $('.scoreCell')[0];
+	var barPaddingLeft = $('.tHeader')[2];
+	barPaddingLeft = $(barPaddingLeft).width();
+	barW = $(barW).width();
+	var heightK = Math.round(300 / 10);
+	console.log(heightK);
+	$('#chart').css("width", w);
+	$('#chart').css("height", 10 * heightK);
+	chartHeight = $('#chart').height();
 
-  svg.selectAll("rect")
-     .data(dataset)
-     .enter()
-     .append("rect")
-     .attr("x", 0)
-     .attr("y", 0)
-     .attr("width", 20)
-     .attr("height", 100);
-  /*
-  d3.select("#chart")
-      .data(dataset)
-      .enter()
-      .append("div")
-      .attr("class", "bar")
-      .style("height", function(d) {
-          var barHeight = d * 5;
-          return barHeight + "px";
-      })
-  */
-  //console.log(score);
-})
+
+
+var x = d3.scale.linear()
+    .domain([0, 6])
+    .range([0, 6]);
+    
+var getBarColor = function(n) {
+	switch (n){
+		case 0: return "yellow";
+			break;
+		case -1: return "green";
+			break;
+		case 1: return "orange";
+			break;
+		default: return "red";
+	}
+};
+
+d3.select("#chart")
+  .selectAll("rect")
+    .data(dataset)
+  .enter().append("rect")
+    .attr("x", function(d){ return barPaddingLeft + (d._holeid * (barW + 2)) + "px"})
+    .attr("height", function(d){return d.score * heightK})
+    .attr("width", barW + "px")
+    .attr("fill", function(d){return getBarColor(d.score - 3);})
+    .attr("y", function(d){return chartHeight - (d.score * heightK)});
+    
+    d3.select("#chart")
+  .selectAll("text")
+    .data(dataset)
+  .enter().append("text")
+	.text(function(d){return d.score})
+    .attr("x", function(d){ return barPaddingLeft + (d._holeid * (barW + 2)) + (barW/2 - 10) + "px"})
+    .attr("fill", function(d){return getBarColor(d.score - 3);})
+	.attr("fill", function(d){return getBarColor(d.score - 3);})
+    .attr("y", function(d){return chartHeight - (d.score * heightK) - 10})
+	.attr("font-size", barW + "px");
+	
+	var lines = [1, 2, 3, 4, 5, 6];
+	
+	d3.select("#chart")
+	.selectAll("line")
+	.data(lines)
+	.enter().append("line")
+		.attr("x1", 0)
+		.attr("y1", function(d){return 300 - (d * heightK) })
+		.attr("x2", w)
+		.attr("y2", function(d){return 300 - (d * heightK) })
+		.attr("stroke", "black")
+		.attr("stroke-width", "2px")
+		.attr("opacity", .20);
+});
+    
+
+
+
+	
 </script>
-
 </html>

@@ -3,11 +3,16 @@
 	    <meta charset="utf-8">
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- google font and bootstrap from cdn -->
 		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
 		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-		<link href="../assets/css/round.css" rel="stylesheet" /> <!--exclusive to post-round view -->
-		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script> <!-- link angular from cdn -->
+    <link href="../assets/css/frolf.css" rel="stylesheet" /> <!-- here's our css linked on every page-->
+    <link href="../assets/css/round.css" rel="stylesheet" /> <!-- here's our css specific to the view-->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script> <!-- link angular from cdn -->
+    <!--<script src="http:/code.angularjs.org/X.Y.Z/angular-resource.js" />  we're also loading ng-resource from cdn -->
     <script src="../controllers/scController.js"></script><!-- scController is exclusive to the round view -->
+</header>
+<body>
 <div class="blog-masthead">
       <div class="container">
         <nav class="head-nav">
@@ -23,98 +28,8 @@
 
       </form>
 </div>
-<style>
-html {
-	width: 100%;
-	height: 100%;
-	margin: 0px;
-	padding: 0px;
-}
-table {
-	width: 100%;
-	height:100%;
-}
-td {
-	border-style: solid;
-	height: 30%;
-	width: 5%;
-	border-width: 25px;
-	border-radius: 5px;
-	border-color: green;
-	text-align: center;
-	font-size: 82px;
-	font-family: 'Pacifico', cursive;
-}
-input {
-	height: 100%;
-	font-size: 48px;
-}
 
-/*
- * Override Bootstrap's default container.
- */
-
-@media (min-width: 1200px) {
-  .container {
-    width: 970px;
-  }
-}
-
-
-/*
- * Masthead for nav
- */
-
-.blog-masthead {
-  background-color: #428bca;
-  -webkit-box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
-          box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
-}
-
-.nav-title {
-	position: relative;
-  	display: inline-block;
-  	padding-right: 30px;
- 	font-weight: 1000;
-  	color: #cdddeb;
-  	cursor: pointer;
-}
-
-/* Nav links */
-.nav-item {
-  position: relative;
-  display: inline-block;
-  padding: 10px;
-  font-weight: 500;
-  color: #cdddeb;
-}
-.nav-item:hover,
-.nav-item:focus {
-  color: #fff;
-  text-decoration: none;
-}
-
-/* Active state gets a caret at the bottom */
-.head-nav .active {
-  color: #fff;
-}
-.head-nav .active:after {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 0;
-  margin-left: -5px;
-  vertical-align: middle;
-  content: " ";
-  border-right: 5px solid transparent;
-  border-bottom: 5px solid;
-  border-left: 5px solid transparent;
-}
-
-</style>
-<div ng-app="frolf">
-<div ng-controller="scController as sc" class="container">
+<div ng-app="sc1" ng-controller="scController as sc" class="container">
   <div id="preRound">
     <div class="row">
       <div class="col-lg-4">
@@ -131,7 +46,7 @@ input {
         <div class="col-lg-8" id="namesCont">
         <div>
             <label for="player1">Player 1</label><hr>
-            <input type="text" class="playerNames" ng-model="p1name" id="player1" />
+            <input type="text" class="playerNames" value="John" ng-model="p1name" id="player1" />
             <hr>
           </div>
           <div>
@@ -181,7 +96,9 @@ input {
           </div>
     </div>
 </div>
-</div>
+    
+</body>
+<!-- js loads at the bottom-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">//all jQuery specific to the view is loaded here. nothing in this script impacts the model at all

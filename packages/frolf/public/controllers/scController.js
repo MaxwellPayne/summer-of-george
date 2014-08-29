@@ -1,7 +1,6 @@
-angular.module('mean.frolf')
-// want to tie scController into main module
-    .controller('scController', ['$scope', 'Round', function($scope, Round) {
-	$scope.players = [];
+angular.module('sc1', [])
+	.controller('scController', ['$scope', function($scope) {
+    $scope.players = [];
 	$scope.isPlaying = function(p){
 	    if (p){
 		$scope.players.push({
@@ -12,6 +11,8 @@ angular.module('mean.frolf')
 	}
 	$scope.numOfPlayers = 1; //default
 	$scope.p1name = "John"; //default
+	$scope.p2name, $scope.p3name, $scope.p4name = "enter name";
+
 	$scope.curPar = function(){
 	    return $scope.holes[curHole].par;
 	}
@@ -22,27 +23,39 @@ angular.module('mean.frolf')
 	    return $scope.curHole < 18;
 	}
 	$scope.lastHoleVal = function(){
-	    if ($scope.curHole === $scope.holes.length - 1){
+	    if ($scope.curHole === $scope.holes - 1){
 	    	return "Submit Round";
 	    } else {
 		return "Next Hole";
 	    }
 	}
 	$scope.beginRoundClick = function(e) {
-    	    $scope.curHole = 0;
-	    $scope.curScore = $scope.holes[$scope.curHole].par;
-    	    $scope.isPlaying($scope.p1name);
-    	    $scope.isPlaying($scope.p2name);
-    	    $scope.isPlaying($scope.p3name);
-    	    $scope.isPlaying($scope.p4name);
+		$scope.curHole = 0;
+		$scope.curScore = $scope.holes[$scope.curHole].par;
+		$scope.isPlaying($scope.p1name);
+		$scope.isPlaying($scope.p2name);
+		$scope.isPlaying($scope.p3name);
+		$scope.isPlaying($scope.p4name);
 	}
 	$scope.nextHoleClick = function(e) {
-    	    $scope.curHole++;
+    	scope.curHole++;
 	    $scope.players[0].score.push($scope.curScore);
 	    if ($scope.curHole === $scope.holes.length){ //if it's the last hole of the round, post to server side
-		$scope.postRound($scope.players[0]);
+			$scope.postRound($scope.players[0]);	
 	    }
+	    $scope.hasHonors($scope.players[0]. $scope.players[1]);
+	    console.log('honors tested');
 	}
+	//take players as arguments returns the player w/ honors. called at the beginning of a hole
+	$scope.hasHonors = function(a, b) {
+		for (var i = 0; i < $scope.curHole; i++){
+			if (a.score[$scope.curHole - i] < b.score[$scope.curHole - i]){
+				return a;
+		} else if (a.score[$scope.curHole - i] > b.score[$scope.curHole - i]) {
+			return b;
+		}
+	}
+	return a;
 	//this is called when the round is done
 	$scope.postRound = function(p){
 	    var o = {};
@@ -61,7 +74,7 @@ angular.module('mean.frolf')
 	}
 	//dummy data
 	$scope.course = "Murdock Park";
-	$scope.holes = holes = [
+	$scope.holes = [
 	    {
 		_holeid: 01,
 		par: 3
@@ -134,7 +147,8 @@ angular.module('mean.frolf')
 		_holeid: 18,
 		par: 3
 	    }
-	] 
+	];
     }
-				]
-	       );
+	;
+    }]
+);

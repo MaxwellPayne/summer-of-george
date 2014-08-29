@@ -2,7 +2,7 @@ angular.module('postRound', [])
 	.controller('pRoundCtrlr', ['$scope',  function($scope){
 		$scope.user = "John";
 		$scope.getCellClass = function(n){
-			var classes = ["minusTwo", "minusOne", "even", "plusOne", "plusTwo"];
+			var classes = ["minusTwo", "minusOne", "even", "plusOne", "plusTwo", "plusThree"];
 			var index = 2 + $scope.round.holes[n].score - $scope.course[n].par;
 			return classes[index] + " strongTitle";
 		};
@@ -115,6 +115,7 @@ angular.module('postRound', [])
 					}
 				],
 			};
+			window.round = $scope.round; //find a better way to pass this
 			//dummy data to be wired to course request
 		$scope.course = [
     {
