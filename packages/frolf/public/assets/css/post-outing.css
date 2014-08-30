@@ -7,6 +7,7 @@ table {
 }
 table td {
 	width: 50px;
+	background-color: white;
 } 
 table .tHeader {
 	font-weight: bold;
@@ -20,7 +21,7 @@ table .tHeader {
 	background-color: lightGreen;
 }
 .even {
-	color: black;
+	color: lightBlue;
 }
 .plusOne {
 	color: darkRed;
@@ -36,12 +37,19 @@ table .tHeader {
 	background-color: #B7F200;
 	color: #BFB830;
 }
+.pl
 .player1 .tHeader{
 	background-color: #FF83DD;
 	color: #FFA240;
 }
+.trendline1 {
+	stroke: #FF83DD;
+}
 .player2 .tHeader{
 	background-color: green;
+}
+.trendline2 {
+	stroke: green;
 }
 svg {
 	border: 2px solid black;

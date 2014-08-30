@@ -38,25 +38,44 @@ $(function(){
 			}
 			finalScores.push(cur);
 		}
-		console.log(max + " / " + min);
 		finalScores.sort();
-		range.min = min;
-		range.max = max;
+		range.min = min - 1;
+		range.max = max + 2;
 		return [min, max];
 	}
-	var lines = [];
 	var finalScoreSpread = getDatasetMinOverall(dataset);
 	var w = $('#span').width();//width of the graph
 	var barPaddingLeft = $('.tHeader')[2];
 	barPaddingLeft = $(barPaddingLeft).width();//width of the row headers
 	var barW = $('.scoreCell')[0];
-	barW = $(barW).width();//width of one cell on the scorecard
-
-	var heightK = Math.round(300 / range.max - range.min);
+	barW = $(barW).width() + 2;//width of one cell on the scorecard
+	var heightK = Math.round(450 / 14);
 	$('#chart').css("width", w);
-	$('#chart').css("height", 300);
+	$('#chart').css("height", 450);
 	chartHeight = $('#chart').height();
 	
+	getCellX = function(n){
+		var cur = $('.player0 .scoreCell')[n];
+		curX = $(cur).position();
+		return curX.left;
+	}
+	makeTrendlines = function(){
+		for (var q = 0; q < dataset.length; q++){
+			dataset[q].trendline = [];
+			var trendline = [];
+			for (var i = 0; i < dataset[q].holes.length - 1; i++){
+				var cur = {};
+				cur.y1 = chartHeight - ((dataset[q].spread[i] + 3) * heightK);
+				cur.y2 = chartHeight - ((dataset[q].spread[i + 1] + 3) * heightK);
+				cur.x1 = getCellX(i) - (barPaddingLeft - (barW * 2));
+				cur.x2 = getCellX(i + 1) - (barPaddingLeft - (barW * 2));
+				trendline.push(cur);
+			}
+			dataset[q].trendline = trendline;
+		}
+	};
+	makeTrendlines();
+		
 	var colorsets = [
 		{
 			main: "#FF83DD",
@@ -86,10 +105,9 @@ var getBarColor = function(n) {
 //draw the line graph
 var drawGraphB = function(){
 	var lines = [];
-	for (var i = range.min; i < range.max; i++){
+	for (var i = range.min; i < range.max + 2; i++){
 		lines.push(i);
 	}	
-	console.log(lines);
 	d3.select("#chart")
 	.selectAll("line")
 	.data(lines)
@@ -101,13 +119,21 @@ var drawGraphB = function(){
 		.attr("stroke", "black")
 		.attr("stroke-width", "2px")
 		.attr("opacity", .20);
-	//console.log(dataset[0].spread);
-	
+			
 	d3.select("#chart")
 	.selectAll("text")
 	.data(lines)
 	.enter().append("text")
-		.text(function(d){return "+ " + lines[d]})
+		.text(function(d){
+			var d = d - 3;
+				if (d == 0){
+					return "even"
+				} else if (d >= 1){
+					return "+ " + d;
+				} else {
+					return "- " + d;
+				}
+			})
 		.attr("font-size", "24px")
 		.attr("x", 10)
 		.attr("y", function(d){return chartHeight - (d * heightK) -10});
@@ -118,26 +144,34 @@ var drawGraphB = function(){
 	.enter().append("line")
 		.attr("y1", 0)
 		.attr("y2", w)
-		.attr("x1", function(d){
-			return barPaddingLeft + parseInt(d._holeid) * barW;
+		.attr("x1", function(d, i){
+			return  getCellX(i) - (barPaddingLeft - (barW * 2));
 		})
-		.attr("x2", function(d){
-			return barPaddingLeft + parseInt(d._holeid) * barW;
+		.attr("x2", function(d, i){
+			return getCellX(i) - (barPaddingLeft - (barW * 2));
 		})
 		.attr("stroke", "black")
 		.attr("stroke-width", "2px")
 		.attr("opacity", 0.5);
+
+	fillLines = function() {
+		for (var i = 0; i < dataset.length; i++){		
+			d3.select("#chart")
+			.selectAll("line .trend")
+			.data(dataset[i].trendline)
+			.enter().append("line")
+				.attr("class", "trend")
+				.attr("x1", function(d){return d.x1})
+				.attr("x2", function(d){return d.x2})
+				.attr("y1", function(d){return d.y1})
+				.attr("y2", function(d){return d.y2})
+				.attr("stroke", "black")
+				.attr("stroke-width", "4px")
+				.attr("class", "trendline" + i)
+			}
+	}
+	fillLines();
 	
-	var trendline = [];
-	for (var i = 0; i < dataset[0].holes - 1; i++){
-		
-	}
-		
-	fillLines = function(n) {
-		d3.select("#chart")
-		.selectAll("line .trend")
-		.
-	}
 	
 	fillcircles = function(n) {
 		d3.select("#chart")
@@ -146,24 +180,36 @@ var drawGraphB = function(){
 		.enter().append("circle")
 			.attr("cx", function(d, i)
 				{	
-					var offset = n * 2;
-					return barPaddingLeft +  (i * barW) - offset;
+					return getCellX(i) - (barPaddingLeft - (barW * 2));
 				}
 				)
 			.attr("cy", function(d)
 			{	
-				var offset = n * 3;
-				return chartHeight - (d * heightK) - offset;
+				return chartHeight - ((d + 3) * heightK);
 			}
 				)
 			.attr("r", 10)
 			.attr("class", function(){return "set" + n})
 			.attr("fill", function(){return colorsets[n].main})
 			.attr("opacity", .8);
+			}
+//call fillCircles for each players
+for (var i = 0; i < dataset.length; i++){
+	fillcircles(i);
 }
-fillcircles(0);
-fillcircles(1);
-fillcircles(2);
+
+makeLegend = function(){
+	d3.select("#chart")
+	.selectAll("rect").enter()
+	.append("rect")
+	.attr("fill", "white")
+	.attr("width", 200)
+	.attr("height", 150)
+	.attr("x", 100)
+	.attr("y", 200);
+}
+makeLegend();
+
 };
 drawGraphB();
 //draw the histogram
