@@ -6,9 +6,9 @@
 		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
 		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/css/frolf.css" rel="stylesheet" /> <!-- here's our css linked on every page-->
-    <link href="../assets/css/post-round.css" rel="stylesheet" /> <!--exclusive to post-round view -->
+    <link href="../assets/css/post-outing.css" rel="stylesheet" /> <!--exclusive to post-outing view -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script> <!-- link angular from cdn -->
-    <script src="../controllers/post-round.js"></script><!-- scController is exclusive to the profile view -->
+    <script src="../controllers/post-outing.js"></script><!-- scController is exclusive to the profile view -->
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script><!-- d3 draws charts -->
 </header>
 
@@ -29,16 +29,16 @@
       </form>
 </div>
 
-    <div class="container" ng-app="postRound" ng-controller="pRoundCtrlr" ng-init="parseTimestamp()">
+    <div class="container" ng-app="postOuting" ng-controller="pOtngCtrlr">
 	    <div class="row" id="span">
         <div class="col-lg-4">
           <strong ng-model="user" ng-bind="user"> {{user}} </strong>
         </div>
         <div class="col-lg-4">
-          <strong ng-bind="renderDate()"></strong>
+          <strong></strong>
         </div>
         <div class="col-lg-4">
-          <strong ng-bind="round._coursename"></strong>
+          <strong ng-bind="outing._coursename"></strong>
         </div>
 	    </div>
       <div class="row postRoundSC">
@@ -51,9 +51,11 @@
             <td class="tHeader">Par</td>
             <td ng-repeat="hole in course">{{hole.par}}</td>
           </tr>
-          <tr id="scoreRow">
-            <td class="tHeader">Score</td>
-            <td ng-repeat="hole in course" ng-class="getCellClass($index)" class="scoreCell">{{round.holes[$index].score}}</td>
+          <tr class="scoreRow" ng-class="getRowClass($index)" ng-repeat="round in outing.performances">
+				<td class="tHeader" >
+					<a ng-ref="getRef(round._userid">{{getUserName(round._userid)}}</a>
+				</td>
+				<td ng-repeat="hole in course" ng-class="getCellClass(round.holes[$index].score)" class="scoreCell">{{round.holes[$index].score}}</td>
         </table>
       </div>
       <svg id="chart" class="row">
@@ -63,5 +65,5 @@
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="../controllers/post-round-graphs.js"></script><!--exclusive to the post-round view-->
+<script src="../controllers/post-outing-graphs.js">//exclusive to this view	</script>
 </html>

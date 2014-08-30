@@ -27,15 +27,22 @@ table .tHeader {
 	background-color: lightPink;
 }
 .plusTwo {
-	color: lightRed;
+	background-color: red;
 }
 .plusThree {
 	background-color: #D00000;
 }
+.player0 .tHeader{
+	background-color: #B7F200;
+	color: #BFB830;
+}
+.player1 .tHeader{
+	background-color: #FF83DD;
+	color: #FFA240;
+}
+.player2 .tHeader{
+	background-color: green;
+}
 svg {
 	border: 2px solid black;
-}
-text {
-	stroke: #000000;
-	stroke-width: "1px";
-}
+}	
