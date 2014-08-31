@@ -1,0 +1,12 @@
+.searchField {
+	border: 2px solid black;
+	height: 400px;
+	border-radius: 10px;
+	padding: 10px;
+	text-align: center;
+}
+.searchBtn {
+	background-color: #428bca;
+	width: 90%;
+	font-size: 24px;
+}

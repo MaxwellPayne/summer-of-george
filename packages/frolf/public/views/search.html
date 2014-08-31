@@ -1,0 +1,50 @@
+<html lang="en">
+  <head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../assets/css/search.css" rel="stylesheet" /> <!--exclusive to search view -->
+		<link href="../assets/css/frolf.css" rel="stylesheet" />
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script> <!-- link angular from cdn -->
+    <script src="../controllers/search.js"></script><!-- search Controller is exclusive to the search view -->
+<div class="blog-masthead">
+      <div class="container">
+        <nav class="head-nav">
+        <h1 class="nav-title">TSoG</h1>
+          <a class="nav-item" href="#">Dashboard</a>
+          <a class="nav-item" href="#">Round</a>
+          <a class="nav-item active" href="#">Search</a>
+          <a class="nav-item" href="#">History</a>
+          <a class="nav-item" href="#">Profile</a>
+        </nav>
+      </div>
+      <form id="login"
+
+      </form>
+</div>
+<div ng-app="search" class="container">
+	<div class="row" ng-controller="searchCtrlr as search">
+		<div class="col-lg-4">
+			<strong class="title1">Search by:</strong>
+		</div>
+		<div class="col-lg-4">
+			<label for="geoSearch">
+				<strong>current location</strong>
+			</label>
+			<fieldset class="searchField" id="geoSearch">
+				<button type="button" class="btn btn-default searchBtn">Search by location</button>
+			</fieldset>
+		</div>
+		<div class="col-lg-4">
+			<label for="strSearch">
+				<strong>or course name.</strong>
+			</label>
+			<fieldset class="searchField" id="strSearch">
+				<input id="courseName" />
+				<button type="button" class="btn btn-default searchBtn">Search by name</button>
+			</fieldset>
+		</div>
+	</div>
+</div>

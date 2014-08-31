@@ -168,6 +168,7 @@ var drawGraphB = function(){
 				.attr("stroke", "black")
 				.attr("stroke-width", "4px")
 				.attr("class", "trendline" + i)
+				.attr("stroke-dasharray", "5, 5");
 			}
 	}
 	fillLines();
@@ -199,14 +200,30 @@ for (var i = 0; i < dataset.length; i++){
 }
 
 makeLegend = function(){
+	//draw the legend box
 	d3.select("#chart")
-	.selectAll("rect").enter()
-	.append("rect")
+	.selectAll("rect")
+	.data(dataset)
+	.enter().append("rect")
+	.attr("class", "legend")
 	.attr("fill", "white")
 	.attr("width", 200)
-	.attr("height", 150)
+	.attr("height", 125)
 	.attr("x", 100)
-	.attr("y", 200);
+	.attr("y", 20)
+	.attr("stroke", "black")
+	.attr("stroke-width", "2px");
+	//wrilte the player names
+	d3.select("#chart")
+	.selectAll("text .legend")
+	.data(dataset)
+	.enter().append("text")
+	.attr("class", "legend")
+	.text(function(d){return "player: " + d._userid})
+	.attr("x", 115)
+	.attr("y", function(d, i){return 50 + (i * 25)})
+	.attr("fill", function(d, i){return colorsets[i].main});
+	
 }
 makeLegend();
 
